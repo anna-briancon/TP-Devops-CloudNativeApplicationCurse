@@ -32,6 +32,8 @@ Des règles de protection sont mises en place sur GitHub afin d’assurer la qua
 
 Ces règles empêchent toute modification non validée par revue.
 
+![Protection des branches](branch-protection.png)
+
 ## Convention de commits
 
 Les messages de commit suivent le format Conventional Commits.
