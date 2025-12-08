@@ -107,4 +107,3 @@ jobs:
         run: |
           sonar-scanner \
             -Dsonar.login=${SONAR_TOKEN}
-
