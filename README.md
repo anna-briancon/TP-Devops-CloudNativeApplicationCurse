@@ -1,3 +1,73 @@
+# TP1 
+## Workflow Git
+
+Ce projet suit un workflow Git clair et structuré :
+
+- **Branches principales :**
+  - `main` : code stable et prêt pour la production
+  - `develop` : branche d’intégration des nouvelles fonctionnalités
+- **Branches de fonctionnalité :**
+  - `feature/<nom>` : une branche par fonctionnalité ou tâche
+- **Règles de contribution :**
+  - Tous les développements se font sur des branches `feature/*`
+  - Les merges vers `develop` se font exclusivement via des Pull Requests
+  - Aucun commit direct n’est autorisé sur `main` ou `develop`
+
+Ce workflow garantit un historique clair et évite les modifications non contrôlées sur les branches critiques.
+
+
+## Protection des branches
+
+Des règles de protection sont mises en place sur GitHub afin d’assurer la qualité du code :
+
+### 🔒 Branche `main`
+- Interdiction des push directs  
+- Pull Request obligatoire  
+- Historique linéaire (sans merge commits)
+
+### 🔒 Branche `develop`
+- Interdiction des push directs  
+- Pull Request obligatoire  
+- Historique linéaire requis
+
+Ces règles empêchent toute modification non validée par revue.
+
+## Convention de commits
+
+Les messages de commit suivent le format Conventional Commits.
+Ce standard permet un historique clair et facilement exploitable
+
+Exemples valides :
+
+- `feat: ajout du système d’authentification`
+- `fix: correction de la connexion PostgreSQL`
+- `docs: mise à jour du README`
+- `chore: mise à jour des dépendances`
+- `refactor: simplification du service de réservation`
+
+➡️ **Tout commit ne respectant pas ce format sera automatiquement rejeté par Commitlint.**
+
+## Hooks Git (Husky)
+
+Le projet utilise Husky pour automatiser les contrôles avant chaque commit.
+
+### 🔧 Hooks actifs
+
+- **`pre-commit`**
+  - Exécute la commande `npm run lint:all`
+  - Cette commande lance :
+    - le lint du frontend (Vue 3)
+    - le lint du backend (Node/NestJS)
+  - Si l’un des deux linters échoue, **le commit est bloqué**
+
+- **`commit-msg`**
+  - Exécute `commitlint`
+  - Vérifie que le message de commit respecte le format Conventional Commits
+  - Les messages invalides sont refusés
+
+Ces hooks garantissent une meilleure qualité de code et un historique uniforme.
+
+---
 # Gym Management System
 
 A complete fullstack gym management application built with modern web technologies.
@@ -238,3 +308,4 @@ This project is licensed under the MIT License.
 ## Support
 
 For support or questions, please open an issue in the repository.
+
