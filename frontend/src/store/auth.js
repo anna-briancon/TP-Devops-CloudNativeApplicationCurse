@@ -33,6 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
         currentUser.value = JSON.parse(stored)
       } catch (e) {
         localStorage.removeItem('currentUser')
+        console.error(e)
       }
     }
   }
