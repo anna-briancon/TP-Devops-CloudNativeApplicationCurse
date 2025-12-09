@@ -22,6 +22,7 @@ services:
       - app
 
   backend:
+    image: ${DOCKER_USERNAME}/cloudnative-backend:${IMAGE_TAG:-latest}
     build: ./backend
     container_name: tp_devsecops_backend
     env_file:
@@ -45,6 +46,7 @@ services:
       - app
 
   frontend:
+    image: ${DOCKER_USERNAME}/cloudnative-frontend:${IMAGE_TAG:-latest}
     build:
       context: ./frontend
       dockerfile: Dockerfile

@@ -164,3 +164,23 @@ jobs:
           # Push frontend
           docker push $FRONTEND_IMAGE:${{ github.sha }}
           docker push $FRONTEND_IMAGE:latest
+
+  deploy:
+    name: deploy
+    runs-on: self-hosted
+    needs: docker
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Deploy with Docker Compose
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: |
+          ./scripts/deploy.sh
