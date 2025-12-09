@@ -142,6 +142,7 @@ Configuration des règles GitHub empêchant les merges sans CI et sans Quality G
 - Merges autorisés uniquement via PR validée
 
 ---
+
 # Gym Management System
 
 A complete fullstack gym management application built with modern web technologies.
