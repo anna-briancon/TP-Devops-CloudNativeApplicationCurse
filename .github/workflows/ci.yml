@@ -114,7 +114,7 @@ jobs:
             -Dsonar.login=${SONAR_TOKEN}
   
   docker:
-    name: Build & push Docker images
+    name: docker
     runs-on: self-hosted
     needs: sonar
 
