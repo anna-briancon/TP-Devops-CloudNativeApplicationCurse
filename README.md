@@ -224,6 +224,45 @@ docker compose up --build
 ![run back](docs/tp3-1-back.png)
 ![containers](docs/tp3-1-containers.png)
 
+# TP4
+## Déploiement local automatisé (CD)
+
+Le déploiement est entièrement automatisé via GitHub Actions et un runner local (self-hosted).
+
+### Workflow CI/CD
+![pipeline](docs/tp4-pipeline.png)
+![pipeline detail](docs/tp4-pipeline-2.png)
+
+## Stage deploy
+- S'exécute automatiquement après le job docker (build & push des images).
+- Tourne sur un runner self-hosted (ma machine locale).
+- Utilise le script scripts/deploy.sh qui :
+1. Arrête les conteneurs existants (docker compose down sans suppression de volumes)
+2. Tire les nouvelles images depuis Docker Hub :
+- ${DOCKER_USERNAME}/cloudnative-backend:<sha>
+- ${DOCKER_USERNAME}/cloudnative-frontend:<sha>
+3. Relance l'environnement complet (docker compose up -d)
+
+Les données Postgres sont conservées grâce au volume postgres_data.
+
+## Conditions d'exécution
+
+- Runner local actif (self-hosted runner en ligne dans GitHub).
+- Secrets configurés :
+   - DOCKER_USERNAME
+   - DOCKER_PASSWORD
+   - POSTGRES_DB
+   - POSTGRES_USER
+   - POSTGRES_PASSWORD
+   - SONAR_TOKEN
+- Accès au registre Docker Hub.
+
+## Captures
+Conteneurs relancés : 
+![compose ps](docs/tp4-compose-ps.png)
+Application accessible :
+![app](docs/tp4-page-web.png)
+
 ---
 
 # Gym Management System
