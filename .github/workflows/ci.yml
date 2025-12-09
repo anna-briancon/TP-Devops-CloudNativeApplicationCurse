@@ -10,6 +10,7 @@ on:
     branches:
       - develop
       - main
+      - feature/**
 
 jobs:
   lint:
@@ -111,3 +112,61 @@ jobs:
         run: |
           sonar-scanner \
             -Dsonar.login=${SONAR_TOKEN}
+  
+  docker:
+    name: Build & push Docker images
+    runs-on: self-hosted
+    needs: sonar
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build backend image
+        run: docker build -t backend-ci ./backend
+
+      - name: Build frontend image
+        run: docker build -t frontend-ci ./frontend
+
+      - name: Test backend image runs
+        run: |
+          docker run --rm backend-ci node -e "console.log('backend image ok')"
+
+      - name: Test frontend image runs
+        run: |
+          docker run -d --name frontend-test -p 8080:80 frontend-ci
+          sleep 5
+          docker ps | grep frontend-test
+          docker stop frontend-test
+
+      - name: Tag and push images to GHCR
+        run: |
+          BACKEND_IMAGE=ghcr.io/${{ github.repository_owner }}/cloudnative-backend
+          FRONTEND_IMAGE=ghcr.io/${{ github.repository_owner }}/cloudnative-frontend
+
+          # Tag backend
+          docker tag backend-ci $BACKEND_IMAGE:${{ github.sha }}
+          docker tag backend-ci $BACKEND_IMAGE:latest
+
+          # Tag frontend
+          docker tag frontend-ci $FRONTEND_IMAGE:${{ github.sha }}
+          docker tag frontend-ci $FRONTEND_IMAGE:latest
+
+          # Push backend
+          docker push $BACKEND_IMAGE:${{ github.sha }}
+          docker push $BACKEND_IMAGE:latest
+
+          # Push frontend
+          docker push $FRONTEND_IMAGE:${{ github.sha }}
+          docker push $FRONTEND_IMAGE:latest
