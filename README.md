@@ -108,7 +108,8 @@ Voici l'exécution des jobs lint, build, test et sonar :
 
 Analyse de la branche `feature/ci-pipeline` :
 
-![Sonar Summary](docs/sonar-summary.png)
+![accueil sonar](docs/sonar-accueil.png)
+![accueil sonar mise à jour](docs/sonar-accueil-2.png)
 
 ### SonarCloud - Quality Gate :
 
@@ -140,6 +141,88 @@ Configuration des règles GitHub empêchant les merges sans CI et sans Quality G
 - La Quality Gate SonarCloud doit être verte
 - Push directs interdits sur les branches protégées
 - Merges autorisés uniquement via PR validée
+
+# TP3
+
+[![CI](https://github.com/anna-briancon/TP-Devops-CloudNativeApplicationCurse/actions/workflows/ci.yml/badge.svg)](https://github.com/anna-briancon/TP-Devops-CloudNativeApplicationCurse/actions/workflows/ci.yml)
+
+## Lancer l’environnement avec Docker Compose
+
+Depuis la racine du projet :
+```
+docker compose up --build
+```
+
+## URLs accessibles :
+Frontend : http://localhost:8080
+Backend : http://localhost:3000
+Postgres : accessible uniquement en local (localhost:5432)
+
+## Images Docker
+Les images sont automatiquement construites et poussées vers Docker Hub via la CI.
+
+### Backend :
+https://hub.docker.com/repository/docker/annabriancon/cloudnative-backend/tags
+```
+docker pull annabriancon/cloudnative-backend:latest
+docker pull annabriancon/cloudnative-backend:79b6cfbdf1da05454e7db429f1a7b5500572589e
+```
+![image back](docs/tp3-3-imageback.png)
+
+### Frontend :
+https://hub.docker.com/repository/docker/annabriancon/cloudnative-frontend/tags
+```
+docker pull annabriancon/cloudnative-frontend:latest
+docker pull annabriancon/cloudnative-frontend:79b6cfbdf1da05454e7db429f1a7b5500572589e
+```
+![image front](docs/tp3-3-imagefront.png)
+
+## Pipeline CI (GitHub Actions)
+![Pipeline docker](docs/tp3-3-pipeline.png)
+Le pipeline effectue automatiquement :
+1. Lint front & back
+2. Build frontend
+3. Tests backend
+4. Analyse SonarCloud
+5. Build Docker (frontend + backend)
+6. Test des images
+7. Push des images vers Docker Hub
+
+Conditions d'exécution :
+- Le pipeline utilise un runner local (runs-on: self-hosted)
+- Les secrets GitHub requis :
+```
+DOCKER_USERNAME
+DOCKER_PASSWORD
+SONAR_TOKEN
+```
+
+## Commandes utiles
+### Voir les conteneurs actifs
+```
+docker compose ps
+```
+![docker compose up](docs/tp3-2-composeup.png)
+
+### Arrêter et nettoyer
+```
+docker compose down
+```
+
+### Rebuild complet
+```
+docker compose down -v
+docker compose up --build
+```
+
+## Captures 
+### Application qui tourne via Docker Compose
+![app](docs/tp3-2-visuel.png)
+
+### Tests locaux
+![run front](docs/tp3-1-front.png)
+![run back](docs/tp3-1-back.png)
+![containers](docs/tp3-1-containers.png)
 
 ---
 
