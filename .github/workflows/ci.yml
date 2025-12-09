@@ -2,10 +2,16 @@ name: CI
 
 on:
   pull_request:
-    branches: [develop]
+    branches: 
+      - feature/ci-pipeline
+      - develop
+      - main
+
   push:
     branches:
       - feature/ci-pipeline
+      - develop
+      - main
 
 jobs:
   lint:

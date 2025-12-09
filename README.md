@@ -20,12 +20,12 @@ Ce workflow garantit un historique clair et évite les modifications non contrô
 
 Des règles de protection sont mises en place sur GitHub afin d’assurer la qualité du code :
 
-### 🔒 Branche `main`
+### Branche `main`
 - Interdiction des push directs  
 - Pull Request obligatoire  
 - Historique linéaire (sans merge commits)
 
-### 🔒 Branche `develop`
+### Branche `develop`
 - Interdiction des push directs  
 - Pull Request obligatoire  
 - Historique linéaire requis
@@ -47,7 +47,7 @@ Exemples valides :
 - `chore: mise à jour des dépendances`
 - `refactor: simplification du service de réservation`
 
-➡️ **Tout commit ne respectant pas ce format sera automatiquement rejeté par Commitlint.**
+ **Tout commit ne respectant pas ce format sera automatiquement rejeté par Commitlint.**
 
 ## Hooks Git (Husky)
 
