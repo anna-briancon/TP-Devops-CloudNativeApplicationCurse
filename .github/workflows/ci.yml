@@ -134,6 +134,7 @@ jobs:
 
       - name: Test frontend image runs
         run: |
+          docker rm -f frontend-test || true
           docker run -d --name frontend-test -p 8080:80 frontend-ci
           sleep 5
           docker ps | grep frontend-test
