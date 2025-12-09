@@ -32,7 +32,7 @@ Des règles de protection sont mises en place sur GitHub afin d’assurer la qua
 
 Ces règles empêchent toute modification non validée par revue.
 
-![Protection des branches](branch-protection.png)
+![Protection des branches](docs/branch-protection.png)
 
 ## Convention de commits
 
@@ -70,6 +70,79 @@ Le projet utilise Husky pour automatiser les contrôles avant chaque commit.
 Ces hooks garantissent une meilleure qualité de code et un historique uniforme.
 
 ---
+# TP2 
+## Badge CI
+
+[![CI](https://github.com/anna-briancon/TP-Devops-CloudNativeApplicationCurse/actions/workflows/ci.yml/badge.svg)](https://github.com/anna-briancon/TP-Devops-CloudNativeApplicationCurse/actions/workflows/ci.yml)
+
+## Badge SonarCloud
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=anna-briancon_TP-Devops-CloudNativeApplicationCurse&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=anna-briancon_TP-Devops-CloudNativeApplicationCurse)
+
+## Runner local (self-hosted)
+
+Voici le runner installé sur ma machine :
+
+![Runner](docs/runner.png)
+
+## Schéma simple du pipeline CI
+```
+Lint (front + back)
+        ↓
+Build (frontend)
+        ↓
+Tests (backend)
+        ↓
+Analyse SonarCloud + Quality Gate
+        ↓
+PR bloquée si un check échoue
+```
+
+## Exécution de la pipeline CI
+
+Voici l'exécution des jobs lint, build, test et sonar :
+
+![Pipeline](docs/pipeline-jobs.png)
+
+## SonarCloud – Tableau de bord
+
+Analyse de la branche `feature/ci-pipeline` :
+
+![Sonar Summary](docs/sonar-summary.png)
+
+### SonarCloud - Quality Gate :
+
+![Quality Gate](docs/quality-gate.png)
+
+---
+
+## PR bloquée (Quality Gate KO)
+
+La PR est refusée car la Quality Gate est en échec :
+
+![PR blocked](docs/pr-blocked.png)
+
+---
+
+## Protections de branches
+
+Configuration des règles GitHub empêchant les merges sans CI et sans Quality Gate :
+
+![Branch Protection](docs/branch-protection-2.png)
+
+## Règles du workflow Git (TP1 + TP2)
+
+- Branches principales : `main` et `develop`
+- Création des features : `feature/...` depuis `develop`
+- Tous les commits suivent Commitlint
+- Tous les push passent par Pull Request vers `develop`
+- La CI doit être verte pour valider une PR
+- La Quality Gate SonarCloud doit être verte
+- Push directs interdits sur les branches protégées
+- Merges autorisés uniquement via PR validée
+
+---
+
 # Gym Management System
 
 A complete fullstack gym management application built with modern web technologies.
